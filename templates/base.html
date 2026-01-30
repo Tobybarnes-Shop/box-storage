@@ -272,6 +272,10 @@
             color: #767676;
             font-size: 0.85rem;
         }
+        footer .version {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
         /* Screen reader only */
         .sr-only {
             position: absolute;
@@ -319,7 +323,8 @@
         {% block content %}{% endblock %}
     </main>
     <footer>
-        Created by Moss Music Software
+        Created by Moss Music Software<br>
+        <span class="version">v{{ version }} · Built {{ build_date }}</span>
     </footer>
 </body>
 </html>

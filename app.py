@@ -16,6 +16,14 @@ import qrcode
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload
 
+# Version info
+VERSION = "1.0.0"
+BUILD_DATE = "2026-01-30"
+
+@app.context_processor
+def inject_version():
+    return {'version': VERSION, 'build_date': BUILD_DATE}
+
 # Configuration - use /data in production (Fly.io volume), local in dev
 DATA_DIR = Path(os.environ.get('DATA_PATH', Path(__file__).parent))
 BOXES_DIR = DATA_DIR / "boxes"
