@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Edit {{ box_id }} - Box Storage{% endblock %}
+
+{% block content %}
+<h2>Edit {{ box_id }}</h2>
+
+<form method="post">
+    <textarea name="content" autofocus>{{ content }}</textarea>
+    <div class="actions">
+        <button type="submit" class="btn">Save</button>
+        <a href="/box/{{ box_id }}" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}{{ box_id }} - Box Storage{% endblock %}
+
+{% block content %}
+<div class="content">
+    {{ content | replace('\n', '<br>') | safe }}
+</div>
+
+<div class="actions">
+    <a href="/box/{{ box_id }}/edit" class="btn">Edit</a>
+    <a href="/box/{{ box_id }}/qr" class="btn btn-secondary" download="{{ box_id }}-qr.png">Download QR</a>
+    <form action="/box/{{ box_id }}/delete" method="post" style="display:inline" onsubmit="return confirm('Delete this box?');">
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+</div>
+
+<!-- Photos Section -->
+<div class="photos-section">
+    <h3>Photos</h3>
+
+    {% if photos %}
+    <div class="photo-grid">
+        {% for photo in photos %}
+        <div class="photo-item">
+            <a href="/box/{{ box_id }}/photos/{{ photo }}" target="_blank">
+                <img src="/box/{{ box_id }}/photos/{{ photo }}" alt="Photo of {{ box_id }}">
+            </a>
+            <form action="/box/{{ box_id }}/photos/{{ photo }}/delete" method="post" class="photo-delete">
+                <button type="submit" onclick="return confirm('Delete this photo?');">&times;</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="no-photos">No photos yet</p>
+    {% endif %}
+
+    <form action="/box/{{ box_id }}/photos" method="post" enctype="multipart/form-data" class="photo-upload" id="photo-form">
+        <input type="file" name="photo" accept="image/*" id="photo-input">
+        <label for="photo-input" class="btn btn-secondary" id="photo-label">Add Photo</label>
+        <div id="photo-preview" style="display:none;">
+            <img id="preview-img" src="" alt="Preview">
+            <button type="submit" class="btn">Upload</button>
+        </div>
+    </form>
+    <script>
+        document.getElementById('photo-input').addEventListener('change', function() {
+            if (this.files.length > 0) {
+                var file = this.files[0];
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview-img').src = e.target.result;
+                    document.getElementById('photo-preview').style.display = 'flex';
+                    document.getElementById('photo-label').textContent = 'Change';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</div>
+
+<div class="qr-section">
+    <h3>QR Code</h3>
+    <img src="data:image/png;base64,{{ qr_base64 }}" alt="QR Code for {{ box_id }}">
+    <div class="qr-url">{{ qr_url }}</div>
+    <p style="color:#666; font-size:0.9rem; margin-top:15px;">Print and stick on your box</p>
+</div>
+{% endblock %}

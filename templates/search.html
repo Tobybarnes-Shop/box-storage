@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Search: {{ query }} - Box Storage{% endblock %}
+
+{% block content %}
+<h2>Search Results{% if query %} for "{{ query }}"{% endif %}</h2>
+
+{% if results %}
+<ul class="box-list">
+    {% for box in results %}
+    <li>
+        <a href="/box/{{ box.id }}">
+            <div class="box-title">{{ box.title }}</div>
+            <div class="box-id">{{ box.id }}</div>
+            {% if box.preview %}
+            <div style="color:#666; font-size:0.85rem; margin-top:5px;">
+                {% for line in box.preview %}
+                <div>...{{ line }}...</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+<p style="color:#666;">Found {{ results|length }} box{% if results|length != 1 %}es{% endif %}</p>
+{% elif query %}
+<div class="empty">
+    <p>No boxes found matching "{{ query }}"</p>
+</div>
+{% else %}
+<div class="empty">
+    <p>Enter a search term above</p>
+</div>
+{% endif %}
+{% endblock %}

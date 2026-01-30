@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Box Storage{% endblock %}</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+            color: #333;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        header h1 a {
+            text-decoration: none;
+            color: #333;
+        }
+        nav {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .search-form {
+            display: flex;
+            gap: 5px;
+        }
+        .search-form input[type="text"] {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        a {
+            color: #0066cc;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #0066cc;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn:hover {
+            background: #0055aa;
+        }
+        .btn-secondary {
+            background: #666;
+        }
+        .btn-secondary:hover {
+            background: #555;
+        }
+        .btn-danger {
+            background: #cc3333;
+        }
+        .btn-danger:hover {
+            background: #aa2222;
+        }
+        .btn-small {
+            padding: 5px 10px;
+            font-size: 0.85rem;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .box-list {
+            list-style: none;
+            padding: 0;
+        }
+        .box-list li {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .box-list a {
+            display: block;
+            padding: 15px 20px;
+            text-decoration: none;
+            color: #333;
+        }
+        .box-list a:hover {
+            background: #f9f9f9;
+        }
+        .box-list .box-id {
+            color: #666;
+            font-size: 0.85rem;
+        }
+        .box-list .box-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        .box-list .box-date {
+            color: #999;
+            font-size: 0.8rem;
+        }
+        textarea {
+            width: 100%;
+            min-height: 400px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            resize: vertical;
+        }
+        .content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .content h1, .content h2, .content h3 {
+            margin-top: 0;
+        }
+        .content ul {
+            padding-left: 20px;
+        }
+        .qr-section {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .qr-section img {
+            max-width: 200px;
+        }
+        .qr-section .qr-url {
+            font-size: 0.8rem;
+            color: #666;
+            word-break: break-all;
+            margin-top: 10px;
+        }
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        /* Photos section */
+        .photos-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .photos-section h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .photo-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f0f0f0;
+        }
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .photo-item .photo-delete {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+        .photo-item .photo-delete button {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+            padding: 0;
+        }
+        .photo-item .photo-delete button:hover {
+            background: rgba(200,0,0,0.8);
+        }
+        .photo-upload {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .photo-upload input[type="file"] {
+            display: none;
+        }
+        #photo-preview {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        #photo-preview img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .no-photos {
+            color: #999;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+            color: #999;
+            font-size: 0.85rem;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .actions {
+                flex-direction: column;
+            }
+            .btn {
+                text-align: center;
+            }
+            .photo-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><a href="/">Box Storage</a></h1>
+        <nav>
+            <form action="/search" method="get" class="search-form">
+                <input type="text" name="q" placeholder="Search boxes..." value="{{ request.args.get('q', '') }}">
+            </form>
+            <a href="/new" class="btn btn-small">+ New Box</a>
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        Created by Moss Music Software
+    </footer>
+</body>
+</html>
