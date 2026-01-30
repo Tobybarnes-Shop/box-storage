@@ -23,11 +23,11 @@
     <div class="photo-grid">
         {% for photo in photos %}
         <div class="photo-item">
-            <a href="/box/{{ box_id }}/photos/{{ photo }}" target="_blank">
-                <img src="/box/{{ box_id }}/photos/{{ photo }}" alt="Photo of {{ box_id }}">
+            <a href="/box/{{ box_id }}/photos/{{ photo }}" target="_blank" aria-label="View full size photo (opens in new tab)">
+                <img src="/box/{{ box_id }}/photos/{{ photo }}" alt="Photo of {{ box_id }} contents">
             </a>
             <form action="/box/{{ box_id }}/photos/{{ photo }}/delete" method="post" class="photo-delete">
-                <button type="submit" onclick="return confirm('Delete this photo?');">&times;</button>
+                <button type="submit" aria-label="Delete photo" onclick="return confirm('Delete this photo?');">&times;</button>
             </form>
         </div>
         {% endfor %}
